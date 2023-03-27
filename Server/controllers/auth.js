@@ -6,7 +6,10 @@ exports.signup = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+<<<<<<< HEAD
     const fullname = req.body.fullname;
+=======
+>>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e
     const emailExists = await User.findOne({ email });
     if (emailExists) {
       return res.status(406).json({
@@ -18,7 +21,10 @@ exports.signup = async (req, res) => {
     const user = new User({
       email: email,
       password: hashedPassword,
+<<<<<<< HEAD
       fullname: fullname,
+=======
+>>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e
     });
     const createdUser = await user.save();
     res.status(200).json({
@@ -55,9 +61,12 @@ exports.login = async (req, res, next) => {
     return res.status(422).json({ errors: "Incorrect password" });
   }
 };
+<<<<<<< HEAD
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(err);
   });
 };
+=======
+>>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e

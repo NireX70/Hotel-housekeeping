@@ -6,10 +6,18 @@ exports.signup = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-<<<<<<< HEAD
     const fullname = req.body.fullname;
-=======
->>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e
+
+    //validation-
+    if (!fullname) {
+      return res.send({ error: "Name is required" });
+    }
+    if (!email) {
+      return res.send({ error: "Name is required" });
+    }
+    if (!password) {
+      return res.send({ error: "Name is required" });
+    }
     const emailExists = await User.findOne({ email });
     if (emailExists) {
       return res.status(406).json({
@@ -17,16 +25,14 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       email: email,
       password: hashedPassword,
-<<<<<<< HEAD
       fullname: fullname,
-=======
->>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e
     });
     const createdUser = await user.save();
+
     res.status(200).json({
       user: { email: createdUser.email, _id: createdUser.id },
     });
@@ -38,35 +44,37 @@ exports.signup = async (req, res) => {
 
 //for login
 exports.login = async (req, res, next) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email: email });
-  console.log(user);
-  if (!user) {
-    return res.status(422).json({ errors: "user not found" });
-  }
-  const passwordMatch = await bcrypt.compare(password, user.password);
-  if (passwordMatch) {
+    const user = await User.findOne({ email: email });
+    console.log(user);
+    if (!user) {
+      return res.status(404).json({ errors: "user not found" });
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(404).json({ errors: "Invalid password" });
+    }
     const token = jwt.sign(
       {
         email: user.email,
-        userId: user._id.toString(),
+        userId: user._id,
       },
-      "somesupersecretsecret",
-      { expiresIn: "1h" }
+      process.env.JWT_SECRET
+      // { expiresIn: "24h" }
     );
-    return res.status(200).json({ token: token, id: user.id });
-  } else {
-    return res.status(422).json({ errors: "Incorrect password" });
+    return res
+      .status(200)
+      .json({ token: token, id: user.id, email: user.email });
+  } catch (error) {
+    console.error(error);
   }
 };
-<<<<<<< HEAD
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(err);
   });
 };
-=======
->>>>>>> d1feed47d57c0682c15c403ccfe9f44a917c9c2e

@@ -8,7 +8,6 @@ import useValidateToken from "../hooks/useValidateToken";
 import Loader from "../components/dashboard/layouts/loader/Loader";
 const Dashboard = () => {
   useValidateToken();
-  const navigate = useNavigate();
   const hasToken = useSelector((state) => state.auth.token);
   if (!hasToken) {
     console.log("Inside dashboard to navigate");

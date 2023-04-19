@@ -7,9 +7,12 @@ const express = require("express");
 // const ErrorHandler = require("./utils/ErrorHandler");
 const app = express();
 const authRoute = require("./routes/auth");
-const staffRoute = require("./routes/staff");
+const staffRoute = require("./routes/guest");
+const roomRoute = require("./routes/room");
+const chatsRoute = require("./routes/chats");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./database/connect.js");
-const messageRouter = require("./routes/Message");
+const http = require("http");
 
 app.use(
   cors({
@@ -21,9 +24,10 @@ app.use(express.json());
 
 app.use(authRoute);
 app.use(staffRoute);
-
-app.use("/api/sendMessage", messageRouter);
-
+app.use(roomRoute);
+app.use(chatsRoute);
+app.use(notFound);
+app.use(errorHandler);
 const port = process.env.PORT || 5000;
 // app.use(ErrorHandler);
 

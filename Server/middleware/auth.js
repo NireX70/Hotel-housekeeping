@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config({path: "../.env"});
-
+require("dotenv").config({ path: "../.env" });
+const User = require("../models/User");
 // Protecting routes on the basis of token
 const reqSignIn = async (req, res, next) => {
   try {

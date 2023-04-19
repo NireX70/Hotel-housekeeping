@@ -3,84 +3,55 @@ import SalesChart from "../component/SalesChart";
 import Feeds from "../component/Feeds";
 import ProjectTables from "../component/ProjectTable";
 import TopCards from "../component/TopCards";
-// import bg1 from "../../../assets/images/bg/bg1.jpg"
-// import bg2 from "../../../assets/images/bg/bg2.jpg"
-// import bg3 from "../../../assets/images/bg/bg3.jpg"
-// import bg4 from "../../../assets/images/bg/bg4.jpg"
-
-// const BlogData = [
-//   {
-//     image: bg1,
-//     title: "This is simple blog",
-//     subtitle: "2 comments, 1 Like",
-//     description:
-//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
-//     btnbg: "primary",
-//   },
-//   {
-//     image: bg2,
-//     title: "Lets be simple blog",
-//     subtitle: "2 comments, 1 Like",
-//     description:
-//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
-//     btnbg: "primary",
-//   },
-//   {
-//     image: bg3,
-//     title: "Don't Lamp blog",
-//     subtitle: "2 comments, 1 Like",
-//     description:
-//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
-//     btnbg: "primary",
-//   },
-//   {
-//     image: bg4,
-//     title: "Simple is beautiful",
-//     subtitle: "2 comments, 1 Like",
-//     description:
-//       "This is a wider card with supporting text below as a natural lead-in to additional content.",
-//     btnbg: "primary",
-//   },
-// ];
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Starter = () => {
+  const [totalCheckin, setTotalCheckIn] = useState();
+  useEffect(() => {
+    const fetchTotalCheckIn = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/guests", {
+          headers: { "content-type": "application/json" },
+        });
+        if (response.data) {
+          setTotalCheckIn(response.data.count);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchTotalCheckIn();
+  }, []);
   return (
     <div>
       {/***Top Cards***/}
       <Row>
-        <Col sm="6" lg="3">
+        <Col sm="6" lg="4">
           <TopCards
             bg="bg-light-success text-success"
             title="Profit"
             subtitle="Yearly Earning"
-            earning="$21k"
+            earning="21k"
             icon="bi bi-wallet"
           />
         </Col>
-        <Col sm="6" lg="3">
-          <TopCards
-            bg="bg-light-danger text-danger"
-            title="Expenses"
-            subtitle="Expenses"
-            earning="$1k"
-            icon="bi bi-coin"
-          />
-        </Col>
-        <Col sm="6" lg="3">
+
+        <Col sm="6" lg="4">
           <TopCards
             bg="bg-light-warning text-warning"
             title="Check In"
             subtitle="Number of CheckIn"
-            earning="456"
+            earning={totalCheckin}
             icon=" bi bi-bag-check"
           />
         </Col>
-        <Col sm="6" lg="3">
+        <Col sm="6" lg="4">
           <TopCards
             bg="bg-light-info text-into"
             title="Check Out"
             subtitle="Number of CheckOut"
-            earning="210"
+            earning="6"
             icon="bi bi-bag"
           />
         </Col>
@@ -100,20 +71,6 @@ const Starter = () => {
           <Feeds />
         </Col>
       </Row>
-      {/***Blog Cards***/}
-      {/* <Row>
-        {BlogData.map((blg, index) => (
-          <Col sm="6" lg="6" xl="3" key={index}>
-            <Blog
-              image={blg.image}
-              title={blg.title}
-              subtitle={blg.subtitle}
-              text={blg.description}
-              color={blg.btnbg}
-            />
-          </Col>
-        ))}
-      </Row> */}
     </div>
   );
 };

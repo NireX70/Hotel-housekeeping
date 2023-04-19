@@ -1,5 +1,5 @@
 const User = require("../models/User");
-
+const GuestUser = require("../models/guestuser");
 const verifyUser = async (req, res, next) => {
   try {
     const { email } = req.method == "GET" ? req.query : req.body;
@@ -11,4 +11,17 @@ const verifyUser = async (req, res, next) => {
     return res.status(404).send({ error: "Authenction user" });
   }
 };
-module.exports = verifyUser;
+
+
+const verifyGuestUser = async (req, res, next) => {
+  try {
+    const { email } = req.method == "GET" ? req.query : req.body;
+    //check the user extencees
+    let exist = await GuestUser.findOne({ email: email });
+    if (!exist) return res.status(400).send({ error: "User not found" });
+    next();
+  } catch (err) {
+    return res.status(404).send({ error: "Authenction user" });
+  }
+};
+module.exports = { verifyUser, verifyGuestUser };

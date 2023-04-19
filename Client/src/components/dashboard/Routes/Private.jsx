@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Loader from "../layouts/loader/Loader";
 import Login from "../../Login/Login";
-import Dashboard from "../../../Pages/Dashboard";
-import { useNavigate } from "react-router-dom";
 
 export default function PrivateRoute() {
   const token = useSelector((state) => state.auth.token);
@@ -16,7 +14,7 @@ export default function PrivateRoute() {
     });
 
     if (res.data.ok) {
-      return history.replacr("/dashboard/home");
+      return history.replace("/dashboard");
     } else {
       return <Loader />;
     }

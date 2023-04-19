@@ -1,19 +1,15 @@
 const mongoose = require("mongoose");
+const roomController = require("../controllers/room");
 
 const taskSchema = new mongoose.Schema({
-  taskName: {
-    type: String,
-    required: true,
-  },
   taskDescription: {
     type: String,
     required: true,
   },
-  assignedTo: {
-    type: mongoose.Types.ObjectId,
-    ref: "Staff",
+  roomNumber: {
+    type: String,
+    required: true,
   },
-
 });
 
 module.exports = mongoose.model("Task", taskSchema);

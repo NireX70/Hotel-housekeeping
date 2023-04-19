@@ -10,18 +10,28 @@ const navigation = [
   },
   {
     title: "Guest Registration",
-    href: "/guestregistration",
-
+    href: "/dashboard/guestregister",
     icon: "bi bi-patch-check",
   },
   {
-    title: "Notifications",
-    href: "/notifications",
+    title: "Rooms",
+    href: "/dashboard/room",
+    icon: "bi bi-patch-check",
+  },
+
+  {
+    title: "Chats",
+    href: "/dashboard/notifications",
+    icon: "bi bi-bell",
+  },
+  {
+    title: "Guest  Bill Entry",
+    href: "/dashboard/guestbill",
     icon: "bi bi-bell",
   },
   {
     title: "History",
-    href: "/History",
+    href: "/dashboard/history",
     icon: "bi bi-clock-history",
   },
 ];
@@ -35,7 +45,9 @@ const Sidebar = () => {
   return (
     <div className="p-3">
       <div className="d-flex align-items-center">
-        <Logo />
+        <span class="text-gray-700 text-3xl font-bold">
+          Hotel New Basuki <hr />
+        </span>
         <Button
           close
           size="sm"

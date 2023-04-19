@@ -81,7 +81,7 @@ const Header = (props) => {
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/about" className="nav-link">
+            <Link to="/dashboard/about" className="nav-link">
               About
             </Link>
           </NavItem>
@@ -97,12 +97,6 @@ const Header = (props) => {
           </DropdownToggle>
 
           <DropdownMenu>
-            <DropdownItem header>Info</DropdownItem>
-            <DropdownItem>My Account</DropdownItem>
-            <DropdownItem>Edit Profile</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem>My Balance</DropdownItem>
-            <DropdownItem>Inbox</DropdownItem>
             <DropdownItem href="/" onClick={onLogoutHandler}>
               Logout
             </DropdownItem>

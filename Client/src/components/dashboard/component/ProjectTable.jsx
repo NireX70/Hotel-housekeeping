@@ -1,61 +1,31 @@
 import { Card, CardBody, CardTitle, CardSubtitle, Table } from "reactstrap";
-import user1 from "../../../assets/images/users/diyansh.png";
-
-
-const tableData = [
-  {
-    avatar: user1,
-    name: "Niraj Bhattarai",
-    email: "niraj@gmail.com",
-    project: "deluxe",
-    status: "done",
-    weeks: "35",
-    budget: "9K",
-  },
-  // {
-  //   avatar: user2,
-  //   name: "Hanna Gover",
-  //   email: "hgover@gmail.com",
-  //   project: "Lading pro React",
-  //   status: "done",
-  //   weeks: "35",
-  //   budget: "95K",
-  // },
-  // {
-  //   avatar: user3,
-  //   name: "Hanna Gover",
-  //   email: "hgover@gmail.com",
-  //   project: "Elite React",
-  //   status: "holt",
-  //   weeks: "35",
-  //   budget: "95K",
-  // },
-  // {
-  //   avatar: user4,
-  //   name: "Hanna Gover",
-  //   email: "hgover@gmail.com",
-  //   project: "Flexy React",
-  //   status: "pending",
-  //   weeks: "35",
-  //   budget: "95K",
-  // },
-  // {
-  //   avatar: user5,
-  //   name: "Hanna Gover",
-  //   email: "hgover@gmail.com",
-  //   project: "Ample React",
-  //   status: "done",
-  //   weeks: "35",
-  //   budget: "95K",
-  // },
-];
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const ProjectTables = () => {
+  const [currentGuests, setCurrentGuests] = useState([]);
+
+  useEffect(() => {
+    const fetchCurrentGuests = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/latestguests", {
+          headers: { "content-type": "application/json" },
+        });
+        if (response.data) {
+          setCurrentGuests(response.data.details);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchCurrentGuests();
+  }, []);
+
   return (
     <div>
       <Card>
         <CardBody>
-          <CardTitle tag="h5">Latest CheckOut And CheckIn</CardTitle>
+          <CardTitle tag="h5">Latest CheckIn</CardTitle>
           <CardSubtitle className="mb-2 text-muted" tag="h6">
             Customer flow
           </CardSubtitle>
@@ -66,41 +36,28 @@ const ProjectTables = () => {
                 <th>Customer Name</th>
                 <th>Room</th>
 
-                <th>Status</th>
-
-                <th>Budget</th>
+                <th>Check In Date</th>
+                <th>Deposit Amount</th>
               </tr>
             </thead>
             <tbody>
-              {tableData.map((tdata, index) => (
-                <tr key={index} className="border-top">
+              {currentGuests.map((guest) => (
+                <tr key={guest._id} className="border-top">
                   <td>
-                    <div className="d-flex align-items-center p-2">
-                      <img
-                        src={tdata.avatar}
-                        className="rounded-circle"
-                        alt="avatar"
-                        width="45"
-                        height="45"
-                      />
-                      <div className="ms-3">
-                        <h6 className="mb-0">{tdata.name}</h6>
-                        <span className="text-muted">{tdata.email}</span>
-                      </div>
+                    <div className="ms-3">
+                      <h6 className="mb-0">{guest.name}</h6>
+                      <span className="text-muted">{guest.email}</span>
                     </div>
                   </td>
-                  <td>{tdata.project}</td>
+                  <td>{guest.roomId ? guest.roomId.roomNumber : ""}</td>
                   <td>
-                    {tdata.status === "pending" ? (
-                      <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
-                    ) : tdata.status === "holt" ? (
-                      <span className="p-2 bg-warning rounded-circle d-inline-block ms-3"></span>
-                    ) : (
-                      <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
-                    )}
+                    {new Date(guest.checkInDate).toLocaleString("en-US", {
+                      month: "2-digit",
+                      day: "2-digit",
+                      year: "2-digit",
+                    })}
                   </td>
-
-                  <td>{tdata.budget}</td>
+                  <td>{guest.amountDeposit}</td>
                 </tr>
               ))}
             </tbody>
@@ -112,3 +69,13 @@ const ProjectTables = () => {
 };
 
 export default ProjectTables;
+
+// <td>
+//   {tdata.status === "pending" ? (
+//     <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
+//   ) : tdata.status === "holt" ? (
+//     <span className="p-2 bg-warning rounded-circle d-inline-block ms-3"></span>
+//   ) : (
+//     <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
+//   )}
+// </td>;

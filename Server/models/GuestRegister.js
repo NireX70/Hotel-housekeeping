@@ -21,7 +21,7 @@ const guestSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  roomNumber: {
+  roomId: {
     type: mongoose.Types.ObjectId,
     ref: "Room",
   },
@@ -41,5 +41,12 @@ const guestSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "User",
   },
+  account: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "GuestBill",
+    },
+  ],
 });
+
 module.exports = mongoose.model("GuestRegister", guestSchema);
